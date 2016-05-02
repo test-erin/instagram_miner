@@ -4,6 +4,7 @@ from .forms import PostForm
 import os
 import requests
 import time
+import simplejson
 
 def campaign_list(request):
 	campaigns = Campaign.objects.order_by('Campaign_Title')
@@ -28,37 +29,45 @@ def new_campaign(request):
 
             # Make API call for campaign & store Photo data to DB. 
             ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
+            print "Access token: ", ACCESS_TOKEN
             hashtag = campaign.Hashtag
+            print "Hashtag: ", hashtag
             pattern = '%m/%d/%Y'
             start_date = int(time.mktime(time.strptime(campaign.Start_Date, pattern)))
+            print "Start date: ", start_date
             end_date = int(time.mktime(time.strptime(campaign.End_Date, pattern)))
+            print "end date: ", end_date
             contine_API_calls = True
             api_hit_count = 0
+            print "API hit count: ", api_hit_count
             url = "https://api.instagram.com/v1/tags/%s/media/recent?access_token=%s" % (hashtag, ACCESS_TOKEN)
             
             while contine_API_calls:
 
-                response = requests.request("GET", url)
-                jdict = response.json()
+            	print "In while loop #######"
+
+                r = requests.get(url)
+                print r
+                jdict = r.json()
                 data = jdict['data']
+                pagination = jdict['pagination']
 
                 for each in data:
-                    post_date_epoch = int(each[u'created_time'])
+                    post_date_epoch = int(each['created_time'])
 
-
-                    if (post_date_epoch < end_date) and (post_date_epoch >= start_date) and (each[u'type'] == u'Photo'):
+                    if (post_date_epoch < end_date) and (post_date_epoch >= start_date) and (each['type'] == 'image' or 'Image'):
 
 	                    print "#### STARTING NEW POST ####################"
 	                    created_date = post_date_epoch
 	                    print "created date: ", created_date
 	                    print type(created_date)
-	                    img_url = str(each[u'Photos'][u'low_resolution'][u'url'])
+	                    img_url = str(each['images']['low_resolution']['url'])
 	                    print "img_url: ", img_url
 	                    print type(img_url)
-	                    post_link = str(each[u'link'])
+	                    post_link = str(each['link'])
 	                    print "post_link: ", post_link
 	                    print type(post_link)
-	                    img_owner = str(each[u'user'][u'username'])
+	                    img_owner = str(each['user']['username'])
 	                    print "img_owner: ", img_owner
 	                    print type(img_owner)
 	                    print "#### ENDING POST ####################"		
@@ -72,11 +81,13 @@ def new_campaign(request):
 	                    	                     pub_date=created_date)
 	                    new_Photo_record.save()
 
-                if jdict["pagination"]["next_url"]:
-            	    url = jdict["pagination"]["next_url"]
+                if 'next_url' in pagination:
+            	    url = pagination['next_url']
             	    api_hit_count += 1
             	else: 
             		contine_API_calls = False
+
+            print "API hit count: ", api_hit_count
 
         return redirect('campaign_detail', pk=campaign.pk)
     else:
