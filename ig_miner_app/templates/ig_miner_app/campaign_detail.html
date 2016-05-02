@@ -1,0 +1,10 @@
+{% extends 'ig_media/base.html' %}
+
+{% block content %}
+
+	<div class="campaign">
+		<h3><a href="{% url 'campaign_detail' pk=campaign.pk %}">{{campaign.Campaign_Title}}</a></h1>
+		<p>#{{campaign.Hashtag}}</p>
+	</div>
+
+{% endblock %}
