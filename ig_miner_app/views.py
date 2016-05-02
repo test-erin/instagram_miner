@@ -17,17 +17,26 @@ def campaign_detail(request, pk):
 
     # Need to query the DB to find all Photos assoc. with this campaign
 
+    this_campaign = Campaign.objects.get(pk=pk)
+    print this_campaign
+
+    # where this_campaign.hashtag = photo.hashtag
+
 
     return render(request, 'ig_miner_app/campaign_detail.html', {'campaign': campaign})
 
 
 def new_campaign(request):
+    
+    # Allow user to create a new campaign using a form
+
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
             campaign = form.save()
 
-            # Make API call for campaign & store Photo data to DB. 
+            # Make API call for newly created campaign
+
             ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
             print "Access token: ", ACCESS_TOKEN
             hashtag = campaign.Hashtag
@@ -51,6 +60,9 @@ def new_campaign(request):
                 jdict = r.json()
                 data = jdict['data']
                 pagination = jdict['pagination']
+
+                # For each published post, if it falls within 
+                # the start and end dates, add it to the database
 
                 for each in data:
                     post_date_epoch = int(each['created_time'])
@@ -80,6 +92,8 @@ def new_campaign(request):
 	                    	                     post_link=post_link,
 	                    	                     pub_date=created_date)
 	                    new_Photo_record.save()
+
+                # If the endpoint still contains data, retrieve it. Otherwise, stop.
 
                 if 'next_url' in pagination:
             	    url = pagination['next_url']
