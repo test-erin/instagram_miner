@@ -11,6 +11,12 @@
 		<a href="default.asp">
   			<img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/2_week-old_Female_Sphynx_(Suki).jpg" alt="Sphinx Kitten!">
 		</a>
+		{% for each in content %}
+			{{ each.img_url }}
+			{{ each.img_owner }}
+			{{ each.post_link }}
+		{% endfor %}
+
 	</div>
 
 {% endblock %}

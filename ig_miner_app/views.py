@@ -18,13 +18,11 @@ def campaign_detail(request, pk):
 
     # Need to query the DB to find all Photos assoc. with this campaign
 
-    this_campaign = Campaign.objects.get(pk=pk)
-    print this_campaign
+    content = Photo.objects.filter(campaign_number=pk)
+    print content
 
-    # where this_campaign.hashtag = photo.hashtag
-
-
-    return render(request, 'ig_miner_app/campaign_detail.html', {'campaign': campaign})
+    return render(request, 'ig_miner_app/campaign_detail.html', {'campaign': campaign,
+                                                                'content':content})
 
 
 def new_campaign(request):
@@ -97,7 +95,7 @@ def new_campaign(request):
 	                    	                     img_owner=img_owner,
 	                    	                     post_link=post_link,
 	                    	                     pub_date=created_date,
-                                                 campaign_title=campaign_title)
+                                                 campaign_number=campaign.id)
 	                    new_Photo_record.save()
 
                 # If the endpoint still contains data, retrieve it. Otherwise, stop.

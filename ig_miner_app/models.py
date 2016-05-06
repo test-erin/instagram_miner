@@ -36,7 +36,7 @@ class Photo(models.Model):
     img_owner = models.CharField(max_length=50, null=False)
     post_link = models.TextField(max_length=300, null=False, default="http://www.google.com")
     pub_date = models.IntegerField(null=False)
-    campaign_title = models.CharField(max_length=100, null=False, default="default campaign")
+    campaign_number = models.IntegerField()         # Same as pkey for each campaign
 
     def __str__(self):
 	    """Provide helpful Photo object representation when printed."""
