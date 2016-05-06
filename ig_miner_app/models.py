@@ -41,4 +41,4 @@ class Photo(models.Model):
     def __str__(self):
 	    """Provide helpful Photo object representation when printed."""
 
-	    return "%s - #%s" % (self.img_owner, self.Hashtag)
+	    return "%s - #%s" % (self.img_owner, self.hashtag)
