@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Campaign, Photo
 from .forms import PostForm
+from django import forms
 import os
 import requests
 import time
@@ -32,6 +33,9 @@ def new_campaign(request):
 
     if request.method == "POST":
         form = PostForm(request.POST)
+
+        # Line 38 is supposed to force a user to provide an end date, but is giving me problems
+        # form.clean('This field is required.')
         if form.is_valid():
             campaign = form.save()
 
@@ -39,6 +43,8 @@ def new_campaign(request):
 
             ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
             print "Access token: ", ACCESS_TOKEN
+            campaign_title=campaign.Campaign_Title
+            print "Campaign Title: ", campaign_title
             hashtag = campaign.Hashtag
             print "Hashtag: ", hashtag
             pattern = '%m/%d/%Y'
@@ -90,7 +96,8 @@ def new_campaign(request):
 	                    	                     img_url=img_url,
 	                    	                     img_owner=img_owner,
 	                    	                     post_link=post_link,
-	                    	                     pub_date=created_date)
+	                    	                     pub_date=created_date,
+                                                 campaign_title=campaign_title)
 	                    new_Photo_record.save()
 
                 # If the endpoint still contains data, retrieve it. Otherwise, stop.

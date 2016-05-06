@@ -10,10 +10,19 @@ from django.utils import timezone
 
 
 class Campaign(models.Model):
-    Campaign_Title = models.CharField(max_length=100, null=False)   # Users can name their campaigns
-    Start_Date = models.CharField(max_length=10, null=False, help_text="Enter as MM/DD/YYYY")
-    End_Date = models.CharField(max_length=10, null=False, help_text="Enter as MM/DD/YYYY")
-    Hashtag = models.CharField(max_length=100, null=False, help_text="Don't type the '#'")
+    Campaign_Title = models.CharField(max_length=100, 
+                                        null=False, 
+                                        unique=True, 
+                                        help_text="Must be different than your other campaigns!")
+    Start_Date = models.CharField(max_length=10, 
+                                    null=False, 
+                                    help_text="Enter as MM/DD/YYYY")
+    End_Date = models.CharField(max_length=10, 
+                                null=False, 
+                                help_text="Enter as MM/DD/YYYY")
+    Hashtag = models.CharField(max_length=100, 
+                                null=False, 
+                                help_text="Don't type the '#'")
 
     def __str__(self):
 	    """Provide helpful Campaign object representation when printed."""
@@ -27,6 +36,7 @@ class Photo(models.Model):
     img_owner = models.CharField(max_length=50, null=False)
     post_link = models.TextField(max_length=300, null=False, default="http://www.google.com")
     pub_date = models.IntegerField(null=False)
+    campaign_title = models.CharField(max_length=100, null=False, default="default campaign")
 
     def __str__(self):
 	    """Provide helpful Photo object representation when printed."""
