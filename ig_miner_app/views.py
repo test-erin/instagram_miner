@@ -18,14 +18,24 @@ def campaign_detail(request, pk):
     campaign = get_object_or_404(Campaign, pk=pk)
 
     # Need to query the DB to find all Photos assoc. with this campaign
+    results = Photo.objects.filter(campaign_number=pk)
+    print results
 
-    content = Photo.objects.filter(campaign_number=pk)
-    print content
+    paginator = Paginator(results, 20) # Show 20 contacts per page
 
-    paginator = Paginator(content, 20) # Show 20 contacts per page
+    page = request.GET.get('page')
+    try:
+        page_content = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        page_content = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        page_content = paginator.page(paginator.num_pages)
 
     return render(request, 'ig_miner_app/campaign_detail.html', {'campaign': campaign,
-                                                                'content':content})
+                                                                'results':results,
+                                                                'page_content': page_content})
 
 
 def new_campaign(request):

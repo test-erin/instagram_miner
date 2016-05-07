@@ -1,17 +1,12 @@
+
+
 {% extends 'ig_miner_app/base.html' %}
 
 {% block content %}
 
-	<div class="campaign">
-		<h3><a href="{% url 'campaign_detail' pk=campaign.pk %}">Campaign: {{campaign.Campaign_Title}}</a></h1>
-		<p>#{{campaign.Hashtag}}</p>
-	</div>
+	<div class="results">
 
-	<hr>
-
-	<div class="content">
-
-		{% for each in content %}
+		{% for each in page_content %}
 
 		<div class="col-xs-6 col-md-3">
 		    <a href={{ each.post_link }} class="thumbnail"><img src={{ each.img_url }} alt={{each.hashtag}}></a>
@@ -30,9 +25,26 @@
 		    </div>
 		</div>
 
-
 		{% endfor %}
 
 	</div>
+
+	<hr>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_content.has_previous %}
+            <a href="?page={{ page_content.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_content.number }} of {{ page_content.paginator.num_pages }}.
+        </span>
+
+        {% if page_content.has_next %}
+            <a href="?page={{ page_content.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
 
 {% endblock %}
