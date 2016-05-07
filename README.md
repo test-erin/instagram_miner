@@ -36,27 +36,32 @@ Installation
 
 Server Setup
 -----------
-- In the directory you created for this project, create a file called 'secrets.sh'. On a Mac, the command is: 
+In the directory you created for this project, create a file called 'secrets.sh'. On a Mac, the Terminal command is: 
 
-` $ touch secrets.sh `
+` (env) $ touch secrets.sh `
 
 Add these two lines to ` project/secrets.sh `:
 
-` export ACCESS_TOKEN=''
-export SECRET_KEY='' `
+``` export ACCESS_TOKEN=''
+export SECRET_KEY='' ```
 
-- You will need an Instagram ACCESS_TOKEN in order to make the API call. Obtain one from [PixelUnion](http://instagram.pixelunion.net/) (Instagram account required). Copy and paste the ACCESS_TOKEN into ` project/secrets.sh ` like so (do not include the brackets):
+You will need an Instagram ACCESS_TOKEN in order to make the API call. Obtain one from [PixelUnion](http://instagram.pixelunion.net/) (Instagram account required). Copy and paste the ACCESS_TOKEN into ` project/secrets.sh ` like so (do not include the brackets):
 
 ` export ACCESS_TOKEN='<access_token>' `
 
- DO NOT commit secrets.sh to your repository! Instead, add 'secrets.sh' as a line in your ` project/.gitignore ` file.
+You will need a SECRET_KEY for the Django app. Obtain one from [MiniWebTool](http://www.miniwebtool.com/django-secret-key-generator/). Copy and paste the SECRET_KEY into ` project/secrets.sh ` like so (do not include the brackets):
 
+` export SECRET_KEY='<SECRET_KEY>' `
 
+ **DO NOT commit secrets.sh to your repository!** Instead, add 'secrets.sh' as a line in your ` project/.gitignore ` file.
 
-- obtain SECRET_KEY using online generator
-- (while still in environment) add ACCESS_TOKEN & SECRET_KEY to secrets.sh
-- source secrets.sh in console tab you'll be using for server
-- python manage.py runserver
+**Important!** We are not committing the ACCESS_TOKEN or SECRET_KEY to our repo for security reasons, but we still need to tell our app this info exists. To do this on a Mac, we need to source the secrets.sh file in **every** Terminal tab we'll be using for this project. 
+
+` (env) $ source secrets.sh `
+
+Woo hoo! You're now ready to run your server! Make sure you're in the project directory, then type the following command in your Terminal and visit ` http://localhost:8000 ` in your web browser:
+
+` (env) $ python manage.py runserver
 
 Database Setup
 -----------
