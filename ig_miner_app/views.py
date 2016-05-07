@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Campaign, Photo
 from .forms import PostForm
 from django import forms
@@ -20,6 +21,8 @@ def campaign_detail(request, pk):
 
     content = Photo.objects.filter(campaign_number=pk)
     print content
+
+    paginator = Paginator(content, 20) # Show 20 contacts per page
 
     return render(request, 'ig_miner_app/campaign_detail.html', {'campaign': campaign,
                                                                 'content':content})

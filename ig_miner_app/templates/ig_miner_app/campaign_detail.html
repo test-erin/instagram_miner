@@ -3,18 +3,34 @@
 {% block content %}
 
 	<div class="campaign">
-		<h3><a href="{% url 'campaign_detail' pk=campaign.pk %}">{{campaign.Campaign_Title}}</a></h1>
+		<h3><a href="{% url 'campaign_detail' pk=campaign.pk %}">Campaign: {{campaign.Campaign_Title}}</a></h1>
 		<p>#{{campaign.Hashtag}}</p>
 	</div>
 
-	<div class="row">
-		<a href="default.asp">
-  			<img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/2_week-old_Female_Sphynx_(Suki).jpg" alt="Sphinx Kitten!">
-		</a>
+	<hr>
+
+	<div class="content">
+
 		{% for each in content %}
-			{{ each.img_url }}
-			{{ each.img_owner }}
-			{{ each.post_link }}
+
+		<div class="col-xs-6 col-md-3">
+		    <a href={{ each.post_link }} class="thumbnail"><img src={{ each.img_url }} alt={{each.hashtag}}></a>
+		    <div class="caption">
+		        <h3>@{{ each.img_owner }}</h3>
+		        <p>Want to use this image for product marketing?</p>
+		        <button onclick="requestPermission()" class="button">Request Permission</button>
+		        <p> <br><br><br> </p>
+
+
+				<script>
+				function requestPermission() {
+				    alert("This feature is coming soon!");
+				}
+				</script>
+		    </div>
+		</div>
+
+
 		{% endfor %}
 
 	</div>
