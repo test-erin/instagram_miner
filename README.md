@@ -73,7 +73,7 @@ If you need more help, check out [this tutorial](https://github.com/DjangoGirls/
 
 Server Setup
 -----------
-In the directory you created for this project, create a file called 'secrets.sh'. On a Mac, the Terminal command is: 
+In the ` project ` directory you created for this project, create a file called 'secrets.sh'. On a Mac, the Terminal command is: 
 
 ` (env) $ touch secrets.sh `
 
@@ -115,7 +115,7 @@ Basic Usage
 
 * The Start Date and End Date for a given hashtag query must be in increments of one whole day, and must be entered by the user as MM/DD/YYY. For example: 03/01/2016 to 03/02/2016. The start date must be in the past and the end date must be no later than the day the user is accessing the app.
 
-* Enter the desired hashtag WITHOUT the '#' symbol. It is a good idea to first check how many posts have been made using the hashtag you've chosen. Login to Instagram and search for the hashtag. The larger the number of posts associated with it, the slower the campaign_detail page will be to load. The data returned from a query on a hashtag with up to 35,000 posts should fit within the 5,000/hour rate limit, but the results page will take a long time to load.
+* Enter the desired hashtag **without** the '#' symbol. It is a good idea to first check how many posts have been made using the hashtag you've chosen. Login to Instagram and search for the hashtag. The larger the number of posts associated with it, the slower the campaign_detail page will be to load. The data returned from a query on a hashtag with up to 35,000 posts should fit within the 5,000/hour rate limit, but the results page will take a long time to load.
 
 ### 2. Viewing your campaigns
 * The home page provides an alphabetized list of your campaigns: ` http://localhost:8000/ `
@@ -131,23 +131,37 @@ Known Issues
 Choices I Made
 -----------
 - In order to reduce the risk of hitting the rate limit for the endpoint (5,000/hour), I sent a ` {'count': 100} ` parameter in the header of the GET request to the Instagram API. I tested this by pulling result photos for a hashtag with 1,550 posts. I expected to have 16 API hits but instead had 22, for an average of 70.5 results per page of the endpoint. 
-- The API call returns data for the time the photo was posted to Instagram as epoch time. The New Campaign form allows the user to enter start/end dates as strings, which are converted to epoch time. All date info is stored in the Postgres database as epoch time in order to more easily compare whether or not a photo was posted within the specified time range.
-- I chose to focus my time on creating a web app with the requested primary functionality of making an API call and collecting photos from it. I opted not to include login/logout functionality for v1.0, but will include it in v2.0
+
+- The API call returns data for the time the photo was posted to Instagram as epoch time. The New Campaign form allows the user to enter start/end dates as strings, which are converted to epoch time. All date info is stored in the Postgres database as epoch time in order to more easily determine whether or not a photo was posted within the specified time range.
+
+- I chose to focus my time on creating a web app with the requested primary functionality of making an API call and collecting photos from it. I opted not to include login/logout functionality for v1.0, but plan to include it in v2.0
+
 - I listed the photo owner's Instagram username under each photo as a link. Someone who is considering using this person's photo for marketing purposes can first check out the user's other posts, to make sure they are not insensitive or inflammatory. 
+
 - I added a place-holder button under each photo that will eventually allow a user to request permission directly from the photo's owner to use the photo for marketing purposes. 
+
 - I used Django because I wanted to learn a new Python web framework. The documentation is AWESOME!
 
 Version 2.0
 -----------
-- Allow a user to delete a campaign they've created, and subsequently delte its associated photos from the database
-- Explore parallel processing of many new campaign requests happening simultaneously
-- Include error handling for an expired Instagram API access token
-- Instagram requires that a developer "Only store or cache User content for the period necessary to provide your app's service." Campaigns could be deleted after 3-6 months of inactivity, with an email sent to the User before deletion. 
 - Add login/logout functionality so users' campaigns are visible only to them
-- Allow a user to request permission from the photo's owner to re-use the photo for marketing purposes
-- Add tests
+
+- Explore parallel processing of many new campaign requests happening simultaneously
+
+- Include error handling for an expired Instagram API access token
+
+- Instagram requires that a developer "Only store or cache User content for the period necessary to provide your app's service." Campaigns could be deleted after 3-6 months of inactivity, with an email sent to the User before deletion. 
+
+- Allow a user to delete a campaign they've created, and subsequently delte its associated photos from the database
+
+- Allow a user to delete result photos from a specific campaign if they don't want to use that photo for marketing
+
 - Allow a user to alter the campaign's date range if their initial inquiry yielded too many / not enough result photos
-- Allow a user to delete result photos from their campaign if they don't want to use that photo for marketing
+
+- Allow a user to request permission from the photo's owner to re-use the photo for marketing purposes
+
+- Add tests
+
 
 About the author
 -----------
