@@ -3,15 +3,15 @@ Instagram Miner allows a user to view & save all posts made with a specific hash
 
 Table of Contents
 ----------
-[Technologies Used](https://github.com/erinallard/instagram_miner#technologies-used)
-[Installation](https://github.com/erinallard/instagram_miner#installation)
-[Server Setup](https://github.com/erinallard/instagram_miner#server-setup)
-[Database Setup](https://github.com/erinallard/instagram_miner#database-setup)
-[Basic Usage](https://github.com/erinallard/instagram_miner#basic-usage)
-[Known Issues](https://github.com/erinallard/instagram_miner#known-issues)
-[Choices I Made](https://github.com/erinallard/instagram_miner#choices-i-made)
-[Version 2.0](https://github.com/erinallard/instagram_miner#version-20)
-[About the Author](https://github.com/erinallard/instagram_miner#about-the-author)
+- [Technologies Used](https://github.com/erinallard/instagram_miner#technologies-used)
+- [Installation](https://github.com/erinallard/instagram_miner#installation)
+- [Server Setup](https://github.com/erinallard/instagram_miner#server-setup)
+- [Database Setup](https://github.com/erinallard/instagram_miner#database-setup)
+- [Basic Usage](https://github.com/erinallard/instagram_miner#basic-usage)
+- [Known Issues](https://github.com/erinallard/instagram_miner#known-issues)
+- [Choices I Made](https://github.com/erinallard/instagram_miner#choices-i-made)
+- [Version 2.0](https://github.com/erinallard/instagram_miner#version-20)
+- [About the Author](https://github.com/erinallard/instagram_miner#about-the-author)
 
 
 Technologies used
@@ -36,7 +36,23 @@ Installation
 
 Server Setup
 -----------
-- obtain ACCESS_TOKEN from PixelUnion
+- In the directory you created for this project, create a file called 'secrets.sh'. On a Mac, the command is: 
+
+` $ touch secrets.sh `
+
+Add these two lines to ` project/secrets.sh `:
+
+` export ACCESS_TOKEN=''
+export SECRET_KEY='' `
+
+- You will need an Instagram ACCESS_TOKEN in order to make the API call. Obtain one from [PixelUnion](http://instagram.pixelunion.net/) (Instagram account required). Copy and paste the ACCESS_TOKEN into ` project/secrets.sh ` like so (do not include the brackets):
+
+` export ACCESS_TOKEN='<access_token>' `
+
+ DO NOT commit secrets.sh to your repository! Instead, add 'secrets.sh' as a line in your ` project/.gitignore ` file.
+
+
+
 - obtain SECRET_KEY using online generator
 - (while still in environment) add ACCESS_TOKEN & SECRET_KEY to secrets.sh
 - source secrets.sh in console tab you'll be using for server
@@ -50,20 +66,20 @@ Basic Usage
 -----------
 - The rate limit for the endpoint used in this app is 5,000/hour. The new_campaign view contains logic such that if the rate limit hits 4,999 the program will stop making API calls and will work with the data thus far obtained.
  
-### To create a new campaign
-..* Visit ` http://localhost:8000/campaign/new/ ` or click the 'New Campaign' link in the top navbar.
-..* The Campaign Title should be unique and descriptive.
+### 1. Create a new campaign
+* Visit ` http://localhost:8000/campaign/new/ ` or click the 'New Campaign' link in the top navbar.
+* The Campaign Title should be unique and descriptive.
 
-..* The Start Date and End Date for a given hashtag query must be in increments of one whole day, and must be entered by the user as MM/DD/YYY. For example: 03/01/2016 to 03/02/2016. The start date must be in the past and the end date must be no later than the day the user is accessing the app.
+* The Start Date and End Date for a given hashtag query must be in increments of one whole day, and must be entered by the user as MM/DD/YYY. For example: 03/01/2016 to 03/02/2016. The start date must be in the past and the end date must be no later than the day the user is accessing the app.
 
-..* Enter the desired hashtag WITHOUT the '#' symbol. It is a good idea to first check how many posts have been made using the hashtag you've chosen. Login to Instagram and search for the hashtag. The larger the number of posts associated with it, the slower the campaign_detail page will be to load. The data returned from a query on a hashtag with up to 35,000 posts should fit within the 5,000/hour rate limit, but the results page will take a long time to load.
+* Enter the desired hashtag WITHOUT the '#' symbol. It is a good idea to first check how many posts have been made using the hashtag you've chosen. Login to Instagram and search for the hashtag. The larger the number of posts associated with it, the slower the campaign_detail page will be to load. The data returned from a query on a hashtag with up to 35,000 posts should fit within the 5,000/hour rate limit, but the results page will take a long time to load.
 
-### Viewing your campaigns
-..* The home page provides an alphabetized list of your campaigns: ` http://localhost:8000/ `
-..* You can also access this list by clicking the link 'My Campaigns' in the top navbar.
+### 2. Viewing your campaigns
+* The home page provides an alphabetized list of your campaigns: ` http://localhost:8000/ `
+* You can also access this list by clicking the link 'My Campaigns' in the top navbar.
 
-### Viewing your campaign details
-..* Clicking on a campaign title on the home page will take you to that campaign's detail page: ` http://localhost:8000/campaign/<pk> `, where ` <pk ` is the primary key (id) associated with that campaign in the database.
+### 3. Viewing your campaign details
+* Clicking on a campaign title on the home page will take you to that campaign's detail page: ` http://localhost:8000/campaign/<pk> `, where ` <pk ` is the primary key (id) associated with that campaign in the database.
 
 Known Issues
 ------------
