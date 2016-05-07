@@ -13,9 +13,9 @@ def campaign_list(request):
     '''Renders a template showing a list of registered campaigns, sorted in alphabetical order.
     Campaigns are created by the user, who provides a hashtag and time range in which to search.'''
 
-	campaigns = Campaign.objects.order_by(Lower('Campaign_Title').asc())
+    campaigns = Campaign.objects.order_by(Lower('Campaign_Title').asc())
 	    
-	return render(request, 'ig_miner_app/campaign_list.html', {'campaigns': campaigns})
+    return render(request, 'ig_miner_app/campaign_list.html', {'campaigns': campaigns})
 
 
 def campaign_detail(request, pk):
