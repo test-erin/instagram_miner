@@ -12,6 +12,7 @@ h3 a {
 
 body {
     padding-left: 15px;
+    padding-top: 150px;
 }
 
 .caption {
@@ -29,5 +30,11 @@ body {
     display: inline-block;
     font-size: 16px;
     border-radius: 12px;
+}
+
+.alert {
+    display: inline-block;
+    margin: 0 auto;
+    vertical-align: center;
 }
 

@@ -11,15 +11,13 @@ from django.utils import timezone
 
 class Campaign(models.Model):
     Campaign_Title = models.CharField(max_length=100, 
-                                        null=False, 
-                                        unique=True, 
-                                        help_text="Must be different than your other campaigns!")
+                                        null=False,)
     Start_Date = models.CharField(max_length=10, 
                                     null=False, 
-                                    help_text="Enter as MM/DD/YYYY")
+                                    help_text="MM/DD/YYYY")
     End_Date = models.CharField(max_length=10, 
                                 null=False, 
-                                help_text="Enter as MM/DD/YYYY")
+                                help_text="MM/DD/YYYY")
     Hashtag = models.CharField(max_length=100, 
                                 null=False, 
                                 help_text="Don't type the '#'")

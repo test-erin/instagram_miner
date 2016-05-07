@@ -10,10 +10,22 @@
     </head>
 
     <body>
-        <div class="page-header">
-            <h1><a href="/">Instagram Miner</a></h1>
-            <a href="{% url 'new_campaign' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+
+        <div>
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container">
+                    <div class="page-header">
+                        <h1><a href="/">Instagram Miner</a></h1>
+                            <ul class="nav navbar-nav">
+                                <li><a href="{% url 'new_campaign' %}" class="top-menu">New Campaign</a></li>
+                                <li><a href="{% url 'campaign_list' %}" class="top-menu">My Campaigns</a></li>
+                            </ul>
+                    </div>
+                </div>
+            </nav>
         </div>
+
+
         <div class="content container">
             <div class="row">
                 <div>

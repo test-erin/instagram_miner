@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models.functions import Lower
 from .models import Campaign, Photo
 from .forms import PostForm
 from django import forms
@@ -9,7 +10,7 @@ import time
 import simplejson
 
 def campaign_list(request):
-	campaigns = Campaign.objects.order_by('Campaign_Title')
+	campaigns = Campaign.objects.order_by(Lower('Campaign_Title').asc())
 	    
 	return render(request, 'ig_miner_app/campaign_list.html', {'campaigns': campaigns})
 
@@ -66,13 +67,14 @@ def new_campaign(request):
             contine_API_calls = True
             api_hit_count = 0
             print "API hit count: ", api_hit_count
+            headers = {'count': 100}
             url = "https://api.instagram.com/v1/tags/%s/media/recent?access_token=%s" % (hashtag, ACCESS_TOKEN)
             
             while contine_API_calls:
 
             	print "In while loop #######"
 
-                r = requests.get(url)
+                r = requests.get(url, headers=headers)
                 print r
                 jdict = r.json()
                 data = jdict['data']
