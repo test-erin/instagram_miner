@@ -10,21 +10,27 @@ import time
 import simplejson
 
 def campaign_list(request):
+    '''Renders a template showing a list of registered campaigns, sorted in alphabetical order.
+    Campaigns are created by the user, who provides a hashtag and time range in which to search.'''
+
 	campaigns = Campaign.objects.order_by(Lower('Campaign_Title').asc())
 	    
 	return render(request, 'ig_miner_app/campaign_list.html', {'campaigns': campaigns})
 
 
 def campaign_detail(request, pk):
+    ''' Renders a template showing the photo results of the campaign. 20 results per page,
+    with pagination capabilities at the bottom of each page.''' 
+
     campaign = get_object_or_404(Campaign, pk=pk)
 
-    # Need to query the DB to find all Photos assoc. with this campaign
+    # Query the DB to find all Photo records associated with this campaign
     results = Photo.objects.filter(campaign_number=pk)
-    print results
-
+    
+    # Set up the pagination of the results
     paginator = Paginator(results, 20) # Show 20 contacts per page
-
     page = request.GET.get('page')
+
     try:
         page_content = paginator.page(page)
     except PageNotAnInteger:
@@ -40,70 +46,45 @@ def campaign_detail(request, pk):
 
 
 def new_campaign(request):
+    ''' Renders a template showing a form, based on the Campaign model, with which the user
+    creates a new campaign. User provides a title, time range and hashtag.'''
     
     # Allow user to create a new campaign using a form
-
     if request.method == "POST":
         form = PostForm(request.POST)
-
-        # Line 38 is supposed to force a user to provide an end date, but is giving me problems
-        # form.clean('This field is required.')
+        # Need code to force a user to provide an end date
         if form.is_valid():
             campaign = form.save()
 
-            # Make API call for newly created campaign
-
+            # Initialize variables (most pulled from form) for use in Instagram API call
             ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
-            print "Access token: ", ACCESS_TOKEN
             campaign_title=campaign.Campaign_Title
-            print "Campaign Title: ", campaign_title
             hashtag = campaign.Hashtag
-            print "Hashtag: ", hashtag
             pattern = '%m/%d/%Y'
             start_date = int(time.mktime(time.strptime(campaign.Start_Date, pattern)))
-            print "Start date: ", start_date
             end_date = int(time.mktime(time.strptime(campaign.End_Date, pattern)))
-            print "end date: ", end_date
+            url = "https://api.instagram.com/v1/tags/%s/media/recent?access_token=%s" % (hashtag, ACCESS_TOKEN)
+            headers = {'count': 100}
+
+            # Rate limit for this endpoint is 5000/hour
             contine_API_calls = True
             api_hit_count = 0
-            print "API hit count: ", api_hit_count
-            headers = {'count': 100}
-            url = "https://api.instagram.com/v1/tags/%s/media/recent?access_token=%s" % (hashtag, ACCESS_TOKEN)
             
             while contine_API_calls:
-
-            	print "In while loop #######"
-
                 r = requests.get(url, headers=headers)
-                print r
                 jdict = r.json()
                 data = jdict['data']
                 pagination = jdict['pagination']
 
-                # For each published post, if it falls within 
-                # the start and end dates, add it to the database
-
+                # If retrieved photo falls within time range, add to DB
                 for each in data:
                     post_date_epoch = int(each['created_time'])
 
                     if (post_date_epoch < end_date) and (post_date_epoch >= start_date) and (each['type'] == 'image' or 'Image'):
-
-	                    print "#### STARTING NEW POST ####################"
 	                    created_date = post_date_epoch
-	                    print "created date: ", created_date
-	                    print type(created_date)
 	                    img_url = str(each['images']['low_resolution']['url'])
-	                    print "img_url: ", img_url
-	                    print type(img_url)
 	                    post_link = str(each['link'])
-	                    print "post_link: ", post_link
-	                    print type(post_link)
 	                    img_owner = str(each['user']['username'])
-	                    print "img_owner: ", img_owner
-	                    print type(img_owner)
-	                    print "#### ENDING POST ####################"		
-	                    print ""
-	                    print ""
 
 	                    new_Photo_record = Photo(hashtag=hashtag,
 	                    	                     img_url=img_url,
@@ -114,7 +95,6 @@ def new_campaign(request):
 	                    new_Photo_record.save()
 
                 # If the endpoint still contains data, retrieve it. Otherwise, stop.
-
                 if 'next_url' in pagination:
             	    url = pagination['next_url']
             	    api_hit_count += 1

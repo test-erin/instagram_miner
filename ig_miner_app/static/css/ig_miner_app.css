@@ -15,11 +15,13 @@ body {
     padding-top: 150px;
 }
 
+/* Centers the caption under its respective photo */
 .caption {
 	margin: auto;
 	text-align: center;
 }
 
+/* "Request permission" buttons within each result-photo's caption */
 .button {
     background-color: #428bca; 
     border: none;
@@ -32,6 +34,7 @@ body {
     border-radius: 12px;
 }
 
+/* Surrounds the pagination functionality */
 .alert {
     display: inline-block;
     margin: 0 auto;

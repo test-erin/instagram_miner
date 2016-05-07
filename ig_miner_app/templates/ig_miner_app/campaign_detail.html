@@ -2,16 +2,19 @@
 
 {% block content %}
 
+	<!-- Reminder of Campaign title & hashtag -->
 	<div class="campaign">
 		<h3><a href="{% url 'campaign_detail' pk=campaign.pk %}">{{campaign.Campaign_Title}}</a></h1>
 		<p>#{{campaign.Hashtag}}</p>
 		<p> <br> </p>
 	</div>
 
+	<!-- Results shown here -->
 	<div class="results">
 
 		{% for each in page_content %}
 
+		<!-- Using Bootstrap's thumbnail capabilities for better display -->
 		<div class="col-xs-6 col-md-3">
 		    <a href={{ each.post_link }} class="thumbnail"><img src={{ each.img_url }} alt={{each.hashtag}}></a>
 		    <div class="caption">
@@ -20,7 +23,7 @@
 		        <button onclick="requestPermission()" class="button">Request Permission</button>
 		        <p> <br><br><br> </p>
 
-
+				<!-- Future build-out will allow user to contact photo's owner -->
 				<script>
 				function requestPermission() {
 				    alert("This feature is coming soon!");
@@ -33,6 +36,7 @@
 
 	</div>
 
+	<!-- Using Bootstrap's pagination capabilities -->
 	<div class="pagination">
 		<div class="alert alert-warning" role="alert">
 		    <span class="step-links">
