@@ -98,6 +98,9 @@ def new_campaign(request):
                 if 'next_url' in pagination:
             	    url = pagination['next_url']
             	    api_hit_count += 1
+                    if api_hit_count = 4999:
+                        contine_API_calls = False
+                        print "Rate limit reached. Aborting further collection of posts."
             	else: 
             		contine_API_calls = False
 

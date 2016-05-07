@@ -1,28 +1,24 @@
 # Instagram Miner
-Instagram Miner allows a user to search and view all Instagram posts made with a specific hashtag within a specific time period. 
+Instagram Miner allows a user to view & save all posts made with a specific hashtag within a time range. 
 
 Table of Contents
 ----------
-- How I Made It
-- Technologies Used
-- Installation
-- Server Setup
-- Database Setup
-- Basic Usage
-- Known Issues
-- Choices I Made
-- Version 2.0
-- About the Author
+[Technologies Used](https://github.com/erinallard/instagram_miner#technologies-used)
+[Installation](https://github.com/erinallard/instagram_miner#installation)
+[Server Setup](https://github.com/erinallard/instagram_miner#server-setup)
+[Database Setup](https://github.com/erinallard/instagram_miner#database-setup)
+[Basic Usage](https://github.com/erinallard/instagram_miner#basic-usage)
+[Known Issues](https://github.com/erinallard/instagram_miner#known-issues)
+[Choices I Made](https://github.com/erinallard/instagram_miner#choices-i-made)
+[Version 2.0](https://github.com/erinallard/instagram_miner#version-20)
+[About the Author](https://github.com/erinallard/instagram_miner#about-the-author)
 
-How I Made It
-------------
-- Description needed
 
 Technologies used
 ----------
-- Python
-- Django
-- Postgres
+- Python backend
+- Django web framework
+- Postgres database
 - Psycopg2
 - HTML/CSS
 - Bootstrap
@@ -52,7 +48,7 @@ Database Setup
 
 Basic Usage
 -----------
-- Rate limits
+- The rate limit for the endpoing used in this app is 5,000/hour.
 - Time frames within which to search
 - Creating a new campaign
 - Viewing all your campaigns
@@ -64,7 +60,7 @@ Known Issues
 
 Choices I Made
 -----------
-- In order to reduce the risk of hitting the rate limit for the endpoint (5,000/hour), I sent a {'count': 100} parameter in the header of the GET request to the Instagram API. I tested this by pulling result photos for a hashtag with 1,550 posts. I expected to have 16 API hits but instead had 22, for an average of 70.5 results per page of the endpoint. 
+- In order to reduce the risk of hitting the rate limit for the endpoint (5,000/hour), I sent a ` {'count': 100} ` parameter in the header of the GET request to the Instagram API. I tested this by pulling result photos for a hashtag with 1,550 posts. I expected to have 16 API hits but instead had 22, for an average of 70.5 results per page of the endpoint. 
 - The API call returns data for the time the photo was posted to Instagram as epoch time. The New Campaign form allows the user to enter start/end dates as strings, which are converted to epoch time. All date info is stored in the Postgres database as epoch time in order to more easily compare whether or not a photo was posted within the specified time range.
 - I chose to focus my time on creating a web app with the requested primary functionality of making an API call and collecting photos from it. I opted not to include login/logout functionality for v1.0, but will include it in v2.0
 - I listed the photo owner's Instagram username under each photo as a link. Someone who is considering using this person's photo for marketing purposes can first check out the user's other posts, to make sure they are not insensitive or inflammatory. 
@@ -85,6 +81,6 @@ Version 2.0
 
 About the author
 -----------
-[Erin Allard on LinkedIn](http://www.linkedin.com/in/erinallard1 "Erin Allard's LinkedIn profile")
+[LinkedIn - Erin Allard](http://www.linkedin.com/in/erinallard1 "Erin Allard's LinkedIn profile")
 
 I'm a 2016 graduate of [Hackbright Academy](http://www.hackbrightacademy.com) in San Francisco, the leading full-stack engineering school for women. My background is in economics, commercial real estate and wealth-building education. I love [quilting](http://www.instagram.com/millennialquilter) and botanical art. 
